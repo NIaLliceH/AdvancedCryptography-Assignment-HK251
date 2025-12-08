@@ -1,3 +1,5 @@
+# Copilot Instructions for Vigenere Cipher Attack Project
+
 ## Project Overview
 This project implements a cryptanalysis tool to break Vigenere ciphers. It includes methods to:
 - Determine the key length using the Index of Coincidence (IC).
@@ -17,7 +19,7 @@ The code is written in Python and focuses on educational cryptography concepts.
 ### Running the Program
 To execute the decryption process, run the following command in the project directory:
 ```powershell
-& C:/Users/.../AppData/Local/Programs/Python/Python313/python.exe decrypt.py
+& C:/Users/imjus/AppData/Local/Programs/Python/Python313/python.exe decrypt.py
 ```
 Ensure the Python interpreter is correctly configured.
 
@@ -60,11 +62,4 @@ recovered_plaintext = cipher_solver.decrypt(challenge_ciphertext)
 - The program assumes the ciphertext is in English.
 - Non-alphabetic characters in the ciphertext are preserved during decryption.
 
-## How to Run `decrypt.py`
-To run the `decrypt.py` file and execute the Vigenere cipher attack, use the following command in your terminal:
-
-```powershell
-& C:/Users/..../AppData/Local/Programs/Python/Python313/python.exe decrypt.py
-```
-
-Make sure you are in the project directory (`Vigenere-attack`) when running the command. Ensure that Python 3.13 is installed and properly configured on your system.
+Feel free to update this file as the project evolves.
