@@ -11,7 +11,7 @@ The code is written in Python and focuses on educational cryptography concepts.
   - `VigenereCipher` class for encryption and decryption.
   - Helper functions for text cleaning, IC calculation, and Chi-squared analysis.
   - A main program to orchestrate the attack.
-- `problem-2.md`: Likely contains the problem description or assignment details.
+- `problem-2.md`: Contains the problem description and assignment details.
 
 ## Developer Workflows
 ### Running the Program
