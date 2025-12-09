@@ -1,29 +1,49 @@
-# Problem 2: Attacking the Vigenere Cipher
+# Problem 3.3: Invalid Curve Attack on ECDH
 
 ## Description
-(vd: cryptanalysis script to recover plaintext from Vigenere cipher) 
+Attack ECDH key exchange by exploiting servers that don't validate custom curve parameters. Uses small cyclic groups and Chinese Remainder Theorem to recover the 192-bit private key.
 
-## File structure
-(vd: list of files and their purpose)
-- file `vigenere.py`: encryption and decryption functions for Vigenere cipher
-- file `attack.py`: functions for analyzing and attacking Vigenere cipher
-- file `requirements.txt`: libraries required to run the code
+## File Structure
+- `exploit.py`: Main attack script
+- `crypto_utils.py`: Cryptographic utilities and custom elliptic curve implementation (from 3-2)
+- `client_smc.py`: SMC protocol client (from 3-2)
+- `check_key.py`: Verification script for recovered key
+- `requirements.txt`: Python dependencies
 
-## Usage instructions
-(vd: how to run the attack script)
-1. Ensure you have Python installed on your machine.
-2. Clone the repository to your local machine.
-3. Navigate to the project directory.
-4. Run the attack script using the command:
-    ```
-    python attack.py --ciphertext <ciphertext_file> --output <output_file>
-    ```
-5. The recovered plaintext will be saved in the specified output file.
+## Usage
 
-## Demo
-(vd: example of running the attack script)
+1. **Install dependencies:**
 ```bash
-python attack.py --ciphertext encrypted.txt --output decrypted.txt
+   pip install -r requirements.txt
 ```
-(demo image or screenshot can be included here)
-![Demo Image](demo_image.png)
+
+2. **Configure target** in `exploit.py`:
+```python
+   USER_ID = "group-1"
+   SERVER_URL = "https://crypto-assignment.dangduongminhnhat2003.workers.dev"
+   USE_PROXY = True # if you want to view packets in BurpSuite
+   PROXY_URL = "http://127.0.0.1:8080" # your BurpSuite proxy server
+```
+
+1. **Run attack:**
+```bash
+   python exploit.py
+```
+
+1. **Verify recovered key** in `check_key.py`:
+```python
+   RECOVERED_KEY = 0x4b9a95c2326135c622fa761e25bfd1a8070dc3f61e6bcc6b
+```
+```bash
+   python check_key.py
+```
+
+## Example Output
+```
+[*] Searching on F_13: Order = 11, a=1, b=1, G=(0,1) -> [OK] k = 5 (mod 11)
+[*] Searching on F_17: Order = 19, a=2, b=3, G=(5,1) -> [OK] k = 13 (mod 19)
+...
+[+] Collected enough modulo equations for 192-bit key recovery.
+
+[+] RECOVERED PRIVATE KEY: 0x4b9a95c2326135c622fa761e25bfd1a8070dc3f61e6bcc6b
+```
