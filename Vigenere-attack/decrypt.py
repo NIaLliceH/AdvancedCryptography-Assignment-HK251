@@ -1,4 +1,6 @@
 import math
+import os
+import sys
 from collections import Counter
 
 ENGLISH_FREQUENCIES = {
@@ -12,7 +14,6 @@ ENGLISH_FREQUENCIES = {
 ALPHABET = "abcdefghijklmnopqrstuvwxyz"
 ALPHABET_UPPER = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 IC_ENGLISH = 0.067
-IC_RANDOM = 0.038
 
 class VigenereCipher:
     def __init__(self, key):
@@ -48,7 +49,7 @@ class VigenereCipher:
         return plaintext
 
 def clean_text(text: str) -> str:
-    return "".join(filter(str.isalpha, text)).lower()
+    return "".join([c.lower() for c in text if c.lower() in ALPHABET])
 
 def calculate_ic(text: str) -> float:
     N = len(text)
@@ -64,7 +65,7 @@ def calculate_ic(text: str) -> float:
     
     return numerator / denominator if denominator > 0 else 0.0
 
-def find_key_length_ic(ciphertext: str, max_key_len=25) -> int:
+def find_key_length_ic(ciphertext: str, max_key_len=40) -> int:
     cleaned_text = clean_text(ciphertext)
     key_lens_sorted = []
     
@@ -125,14 +126,21 @@ def find_best_caesar_shift(subgroup_text: str) -> str:
 
 if __name__ == "__main__":
     
-    challenge_ciphertext = """
-    Ale xsajiae vj tci nmxpcsmfz lnz jldjmnvxrk lfxhrioc svv xtspeirvh, wslwmnb ghsxfclw, rzpvnmzyz, eny tuppzdvthdif hgczzw cdzvsmklamoiw. Na med jsrz, xul eqelvldjr yiqpyw tj xul fpwpif olna wzxl jomq bm iitzxeigr jsyepruzw nmxpc wlynmphp ophxh—v vrhpx zy wtvxr dlpcl xhz wbbp, dapvio, se jsydjmopwalwd eyenngruhd eoi ldqvaeetvrs jj goi xzyxag fbkc. Esysublbbx stzxomc, ubqly iiiikf oegp zsublg hrdhlvs os goi acvjoprq xypdamoiw bm asla laktruw lqair yinal, lyk xhzwr yiqwlgtdsaz llgl kiqia ymdp as a mmpo htglvsdxl vj tyairkvraeetvrs. Avbt eynpino qlalzwvkizw gv qzolvn ntvymefhp mjzrtiyez, xhz esaicwpje mizhmyd h geixehp eslqe dr huhpczxaihvuk esl raoyel sq pemsoiaji, xzyeldxl, hro eoi ugxvteep kisomaf sq eoi hpqnu wzfs. Mn heaf eynpino gvcmwtgetdsaz, xsp hjtzvypjp hhw vdijlh ld h goixvuylepsn jj rhvessc ldjr, nsgpyrey fl kmgtui om gbzqtn qysompl. Xsp hrcdiaa Irjwxivrf, msc peemkpr, iiwtlzey ma alp pairiey qsfcuiy jj goi dzbp tcvbbks eoi uihryazcsh, wciel xsp oiamx bm xsp kiczeflh hlz aedkulh lrhmnnx goi qphxhzv bm Ql’la—xhz kbkhpdz sf ovhal lyk nunxvji. L abve cinyx hzbpd zrglv esl fldwfmyw Qpily ss Yipoz, ahdpr h gzcyypo sal azfsh fvgr hrytomlvxvvr. Dttmlvvyf, my Ryief qlalzwvky, nshsw hpyi jphtlh mj ale bsqz sq ooi uihryazcsh aih flre ev snz ss alcpl vevpzz: xsp Lpynmnu Jtpshs ase alp gpvtpshz, xsp Hwpcsqlp Xphhorw svv zckmnvvl zsfwz, eny Xnyxlcbw fjv goi htjoey. Xulwp mlpizjf yiqwlgtzh avx zysc ai egaixaa xo zbcsety kiaol obx lwzs tj tevqzel qomey jsyobgt dr ypjp, clmnasejmyr ale dhrh xsla ecombuw slk goiwrxypyjis wilvro eoi gmeil. My nvrtmefa, Ildairi tuppzdvthdif zyns hw Hdrqbmdx hrd Wyqkltdt ziza goi lqairgmsl xscvygc xul ppyz sf mivuglcuetdsa—h gjnsmcvp cysnpzw wciel xsp zsug mf yimzyr iixb uih qvvmn fnzio zu oamqn, alp xvvag wht sq zui’s vggpsyd. Alin gljpp, vuswi ef zexdhva, xsaamyflw uixvs iywpkhoiatiye vv ldfryeetvr (mjofoe zc umrqeah) md laxadrrk, jcplmnb xul wzfs jrjq goi pykpenw pfgwp vj bdvgo eyo kiaol. Fbgs alvskipamgpz imklnzmkp ztimmgbew ryswol nuh xzyel mifwsydpfigmgf, wfrnisoman xsla piai nuh ophxh vvr use zwtonmglw mfa wtvkrz ateomn v gbuxtybsun wcpvtebel eshyrpj. Tiaiauppp, tu Ebmeuhqtn yildkvvrd—Ubhadwz, Jlctzxivrvac, lyk Msgez—alp lmxempvmi td vjtzr qlttnaid vw n mmyls, itzvahp dehxe jj elalck sr kyapwsxlrt. Cinciy, ahvaymfl, sc Uhrnvl ffqmzsmzzw raicyhp pzepl eyo jsmhyapsy hpxh Bsq, dlpcles ciys sc Uhlairnt vpayiszrgz wpahvaombu eyo zyfaieprr, clwemzrk jzc aloni jos cpqico hvcmyp avuol. Vu qzolvn omzlw, esl roombu sq ooi aaxryptql lan iivpgpk fetsak wecpgtgc elptrpsun maaicayitvxvvrd. Dvqe qmrd me xlxaklbymnlspy—vw n jsyepruvxvvr zq vre’n mampfpuge, hizvvtpz, eny prnenj pr tci jvvwo vj tci ypztyn. Stciez iiassrz mg alczbkh olr siyd vj sxmrugp luh mzxnwljdpgs, zbntmytuk pciavqpyh wuxl nz rply-hevxu lbapymeigrz eyo jsnngvvydylws wilvro eoi bmevu. Astsi ehtvymnls ivdhrugp clqadrf lpfdpze, olrzi tyxyimmrz vpqsico lhteytac’s zrqbvtyn uuzwg as fykirnxnuh esl ynfrbdr. Hslxhzv vuxpcwveoiq hw l dwmrdxhhp cphpm, v gljpp zm vewmeal, zc h wyhfbsmn nvrtdrhhxtzu sf zbvzxpyji, tci nmxpcsmfz ssmicd wvoashuh nztjomx nuh xphriik, oymorprg olr nea mlxwzia smqp hrd yinal. Fwammvxrsc, mpsmea ma alp lmxempvmi nzuxiiyrz xz tuwpdvr osap, tsrvp eljwpjxijr, nuh esl inyyeprr sbqai hrzmcp as fdrq wycavwe wilvro xvvtvpvac.
-    """
+    filename = "ciphertext.txt"
     
-    key_length_guess = find_key_length_ic(challenge_ciphertext, max_key_len=25)
+    if not os.path.exists(filename):
+        print(f"Loi: Khong tim thay file '{filename}'")
+        sys.exit(1)
+        
+    with open(filename, "r", encoding="utf-8") as f:
+        challenge_ciphertext = f.read()
+
+    print(f"Da doc {len(challenge_ciphertext)} ky tu tu {filename}")
+    
+    key_length_guess = find_key_length_ic(challenge_ciphertext, max_key_len=40)
     
     if key_length_guess == 0:
-        print("Khong tim duoc do dai khoa hop ly. Thu tang max_key_len xem.")
+        print("Khong tim duoc do dai khoa hop ly.")
     else:
         print(f"\nChot do dai khoa la: {key_length_guess}\n")
 
